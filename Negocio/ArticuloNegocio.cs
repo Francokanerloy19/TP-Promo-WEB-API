@@ -38,7 +38,7 @@ namespace Negocio
 
                     ImagenNegocio imagen = new ImagenNegocio();
                     aux.Imagenes = imagen.ObtenerImagenesPorArticulo(aux.IdArticulo);
-                   
+
                     Lista.Add(aux);
                 }
             }
@@ -50,10 +50,10 @@ namespace Negocio
             {
                 accesoDatos.cerrarConexion();
             }
-            return Lista;   
+            return Lista;
         }
-   
-        public Articulo BuscarArticuloPorId( int id)
+
+        public Articulo BuscarArticuloPorId(int id)
         {
             Articulo articulo = null;
             AccesoDatos accesoDatos = new AccesoDatos();
@@ -61,7 +61,7 @@ namespace Negocio
             try
             {
                 accesoDatos.setearConsulta("SELECT a.Id AS IdArticulo, a.Codigo AS CodigoArticulo, a.Nombre AS NombreArticulo, a.Descripcion AS DescripcionArticulo, a.IdMarca, m.Descripcion AS DescripcionMarca, a.IdCategoria, c.Descripcion AS DescripcionCategoria, a.Precio AS PrecioArticulo FROM ARTICULOS a INNER JOIN MARCAS m ON a.IdMarca = m.Id INNER JOIN CATEGORIAS c ON a.IdCategoria = c.Id WHERE a.Id = @id");
-               
+
                 accesoDatos.setearParametros("@Id", id);
                 accesoDatos.ejecutarConsulta();
 
@@ -105,5 +105,38 @@ namespace Negocio
 
             return articulo;
         }
+
+        public void modificar(Articulo art)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+
+
+                // Actualizo los datos del artículo
+                datos.setearConsulta("UPDATE ARTICULOS SET IdMarca=@Mrca, IdCategoria=@Ctgria, Codigo=@cod, Nombre=@nom, Descripcion=@desc, Precio=@Prec WHERE Id=@id");
+                datos.setearParametros("@id", art.IdArticulo);
+                datos.setearParametros("@cod", art.CodigoArticulo);
+                datos.setearParametros("@nom", art.NombreArticulo);
+                datos.setearParametros("@desc", art.DescripcionArticulo);
+                datos.setearParametros("@Mrca", art.Marca.IdMarca);
+                datos.setearParametros("@Ctgria", art.Categoria.IdCategoria);
+                datos.setearParametros("@Prec", art.PrecioArticulo);
+
+                
+                datos.ejecutarAccion();
+
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }

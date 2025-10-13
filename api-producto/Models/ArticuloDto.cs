@@ -20,6 +20,6 @@ namespace api_producto.Models
         public int IdMarca { get; set; }
         public int IdCategoria { get; set; }
 
-        //public int IdImagen { get; set; }
+        public List<Imagen> Imagenes { get; set; } = new List<Imagen>();
     }
 }
