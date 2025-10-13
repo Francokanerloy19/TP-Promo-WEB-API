@@ -9,7 +9,6 @@ namespace api_producto.Models
 {
     public class ArticuloDto
     {
-
         public string CodigoArticulo { get; set; }
         
         public string NombreArticulo { get; set; }
@@ -21,6 +20,6 @@ namespace api_producto.Models
         public int IdMarca { get; set; }
         public int IdCategoria { get; set; }
 
-        public int IdImagen { get; set; }
+        //public int IdImagen { get; set; }
     }
 }
