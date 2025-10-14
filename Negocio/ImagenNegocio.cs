@@ -1,6 +1,7 @@
 ﻿using Dominio;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,38 @@ namespace Negocio
         }
 
 
-       
+        public void agregarImagen(int idProducto, List<string> imagenes)
+        {
+            {
+                AccesoDatos datos = new AccesoDatos();
+
+                try
+                {
+                    // Iteramos la lista de imágenes
+                    for (int i = 0; i < imagenes.Count; i++)
+                    {
+                        datos.limpiarParametros(); // Limpiamos parámetros del ciclo anterior
+                        datos.setearConsulta("INSERT INTO IMAGENES (IdArticulo, ImagenUrl) VALUES (@idProducto, @url)");
+                        datos.setearParametros("@idProducto", idProducto);
+                        datos.setearParametros("@url", imagenes[i]);
+
+                        datos.ejecutarAccion();
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+
+
+                    throw ex;
+                }
+                finally
+                {
+                    datos.cerrarConexion();
+                }
+            }
+        }
 
     }
 }

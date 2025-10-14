@@ -26,8 +26,28 @@ namespace api_producto.Controllers
         }
 
         // POST: api/Producto
-        public void Post([FromBody] string value)
+        public void Post([FromBody] ArticuloDto articulo)
         {
+            ImagenNegocio imagenNegocio = new ImagenNegocio();
+
+            // ejemplo para validar el funcionamiento
+            // Agregar imágenes a un Producto.
+            int idArticulo = 3; // solo para prueba
+
+           
+            // Creamos una lista vacía de ejempolo
+            List<string> urls = new List<string>();
+
+            
+            foreach (var imagen in articulo.Imagenes)
+            {
+                urls.Add(imagen.ImagenUrl);
+            }
+
+            // Llamamos al método
+            
+            // Recuperamos el Id del articulo agregado
+            imagenNegocio.agregarImagen(idArticulo, urls);
         }
 
         // PUT: api/Articulo/id
@@ -47,7 +67,7 @@ namespace api_producto.Controllers
             nuevo.IdArticulo = id;
 
             negocio.modificar(nuevo);
-           
+
 
         }
 
