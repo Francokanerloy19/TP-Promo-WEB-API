@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -44,12 +45,26 @@ namespace Negocio
             }
         }
 
+        //public void ejecutarAccion()
+        //{
+        //    comando.Connection = conexion;
+        //    try
+        //    {
+        //        conexion.Open();
+        //        comando.ExecuteNonQuery();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
         public void ejecutarAccion()
         {
             comando.Connection = conexion;
             try
             {
-                conexion.Open();
+                if (conexion.State != ConnectionState.Open)
+                    conexion.Open();
                 comando.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -70,6 +85,12 @@ namespace Negocio
 
             conexion.Close();
         }
+
+        public void limpiarParametros()
+        {
+            comando.Parameters.Clear();
+        }
+
     }
 }
 

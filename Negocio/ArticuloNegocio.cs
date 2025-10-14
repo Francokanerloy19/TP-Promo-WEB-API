@@ -122,11 +122,34 @@ namespace Negocio
                 datos.setearParametros("@Mrca", art.Marca.IdMarca);
                 datos.setearParametros("@Ctgria", art.Categoria.IdCategoria);
                 datos.setearParametros("@Prec", art.PrecioArticulo);
-
-                
                 datos.ejecutarAccion();
 
-                
+                datos.setearParametros("@img1", art.Imagenes[0].ImagenUrl);
+                datos.setearParametros("@img2", art.Imagenes[1].ImagenUrl);
+                datos.setearParametros("@img3", art.Imagenes[2].ImagenUrl);
+
+                datos.setearConsulta("UPDATE IMAGENES SET ImagenUrl=@img1 WHERE Id=( SELECT MIN(Id) FROM IMAGENES WHERE IdArticulo =@id)");
+                datos.ejecutarAccion();
+                datos.cerrarConexion();
+                datos.setearConsulta("UPDATE IMAGENES SET ImagenUrl=@img2 WHERE Id=( SELECT MIN(Id)+1 FROM IMAGENES WHERE IdArticulo =@id)");
+                datos.ejecutarAccion();
+                datos.cerrarConexion();
+                datos.setearConsulta("UPDATE IMAGENES SET ImagenUrl=@img3 WHERE Id=( SELECT MIN(Id)+2 FROM IMAGENES WHERE IdArticulo =@id)");
+                datos.ejecutarAccion();
+                datos.cerrarConexion();
+
+                datos.setearConsulta("UPDATE ARTICULOS SET IdMarca = @Mrca WHERE Id = @id");
+                datos.ejecutarAccion();
+                datos.cerrarConexion();
+                datos.setearConsulta("UPDATE ARTICULOS SET IdCategoria = @Ctgria WHERE Id = @id");
+                datos.ejecutarAccion();
+                datos.cerrarConexion();
+                datos.setearConsulta("UPDATE ARTICULOS SET Codigo=@cod, Nombre=@nom, Descripcion=@desc, Precio=@Prec WHERE Id=@id");
+                datos.ejecutarAccion();
+                datos.cerrarConexion();
+
+
+
             }
             catch (Exception ex)
             {

@@ -41,5 +41,29 @@ namespace Negocio
             }
             return imagenes;
         }
+
+
+        public void ModificarImagenes(List<Imagen> imagenes)
+        {
+            foreach (var img in imagenes)
+            {
+                if (img == null || string.IsNullOrEmpty(img.ImagenUrl))
+                    continue;
+
+                AccesoDatos datos = new AccesoDatos();
+                try
+                {
+                    datos.setearConsulta("UPDATE IMAGENES SET ImagenUrl=@url WHERE Id=@id");
+                    datos.setearParametros("@url", img.ImagenUrl);
+                    datos.setearParametros("@id", img.IdImagen);
+                    datos.ejecutarAccion();
+                }
+                finally
+                {
+                    datos.cerrarConexion();
+                }
+            }
+        }
+
     }
 }
