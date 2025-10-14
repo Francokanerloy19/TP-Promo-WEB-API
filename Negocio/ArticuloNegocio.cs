@@ -124,30 +124,21 @@ namespace Negocio
                 datos.setearParametros("@Prec", art.PrecioArticulo);
                 datos.ejecutarAccion();
 
-                datos.setearParametros("@img1", art.Imagenes[0].ImagenUrl);
-                datos.setearParametros("@img2", art.Imagenes[1].ImagenUrl);
-                datos.setearParametros("@img3", art.Imagenes[2].ImagenUrl);
+            
+                for (int i = 0; i < art.Imagenes.Count; i++)
+                {
+                    // Limpio parámetros anteriores
+                    datos.limpiarParametros();
 
-                datos.setearConsulta("UPDATE IMAGENES SET ImagenUrl=@img1 WHERE Id=( SELECT MIN(Id) FROM IMAGENES WHERE IdArticulo =@id)");
-                datos.ejecutarAccion();
-                datos.cerrarConexion();
-                datos.setearConsulta("UPDATE IMAGENES SET ImagenUrl=@img2 WHERE Id=( SELECT MIN(Id)+1 FROM IMAGENES WHERE IdArticulo =@id)");
-                datos.ejecutarAccion();
-                datos.cerrarConexion();
-                datos.setearConsulta("UPDATE IMAGENES SET ImagenUrl=@img3 WHERE Id=( SELECT MIN(Id)+2 FROM IMAGENES WHERE IdArticulo =@id)");
-                datos.ejecutarAccion();
-                datos.cerrarConexion();
+                    // Nueva consulta con desplazamiento dinámico
+                    datos.setearConsulta(@"UPDATE IMAGENES SET ImagenUrl = @img WHERE Id = (SELECT MIN(Id) + @posicion FROM IMAGENES WHERE IdArticulo = @idArticulo)");
 
-                datos.setearConsulta("UPDATE ARTICULOS SET IdMarca = @Mrca WHERE Id = @id");
-                datos.ejecutarAccion();
-                datos.cerrarConexion();
-                datos.setearConsulta("UPDATE ARTICULOS SET IdCategoria = @Ctgria WHERE Id = @id");
-                datos.ejecutarAccion();
-                datos.cerrarConexion();
-                datos.setearConsulta("UPDATE ARTICULOS SET Codigo=@cod, Nombre=@nom, Descripcion=@desc, Precio=@Prec WHERE Id=@id");
-                datos.ejecutarAccion();
-                datos.cerrarConexion();
-
+                    datos.setearParametros("@img", art.Imagenes[i].ImagenUrl);
+                    datos.setearParametros("@posicion", i);
+                    datos.setearParametros("@idArticulo", art.IdArticulo);
+                    datos.ejecutarAccion();
+                    datos.cerrarConexion();
+                }
 
 
             }
@@ -158,6 +149,38 @@ namespace Negocio
             finally
             {
                 datos.cerrarConexion();
+            }
+        }
+
+        public void eliminar(int idArticulo)
+        {
+            AccesoDatos accesoDatos = new AccesoDatos();
+            try
+            {
+                accesoDatos.limpiarParametros();
+                accesoDatos.setearConsulta("DELETE FROM VOUCHERS WHERE IdArticulo = @id");
+                accesoDatos.setearParametros("@id", idArticulo);
+                accesoDatos.ejecutarAccion();
+
+                accesoDatos.limpiarParametros();
+                accesoDatos.setearConsulta("DELETE FROM IMAGENES WHERE IdArticulo = @id");
+                accesoDatos.setearParametros("@id", idArticulo);
+                accesoDatos.ejecutarAccion();
+
+                accesoDatos.limpiarParametros();
+                accesoDatos.setearConsulta("DELETE FROM ARTICULOS WHERE Id = @id");
+                accesoDatos.setearParametros("@id", idArticulo);
+                accesoDatos.ejecutarAccion();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            finally
+            {
+                accesoDatos.cerrarConexion();
             }
         }
 

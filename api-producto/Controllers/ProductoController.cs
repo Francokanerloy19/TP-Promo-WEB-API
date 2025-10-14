@@ -26,7 +26,7 @@ namespace api_producto.Controllers
         }
 
         // POST: api/Producto
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string value)
         {
         }
 
@@ -41,19 +41,30 @@ namespace api_producto.Controllers
             nuevo.NombreArticulo = articulo.NombreArticulo;
             nuevo.DescripcionArticulo = articulo.DescripcionArticulo;
             nuevo.PrecioArticulo = articulo.PrecioArticulo;
-            nuevo.Marca = new Marca { IdMarca = articulo.IdMarca};
+            nuevo.Marca = new Marca { IdMarca = articulo.IdMarca };
             nuevo.Categoria = new Categoria { IdCategoria = articulo.IdCategoria };
             nuevo.Imagenes = articulo.Imagenes;
             nuevo.IdArticulo = id;
 
             negocio.modificar(nuevo);
-            imgnegocio.ModificarImagenes(nuevo.Imagenes);
+           
 
         }
 
         // DELETE: api/Producto/5
         public void Delete(int id)
         {
+            try
+            {
+                ArticuloNegocio articuloNegocio = new ArticuloNegocio();
+                articuloNegocio.eliminar(id);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }
