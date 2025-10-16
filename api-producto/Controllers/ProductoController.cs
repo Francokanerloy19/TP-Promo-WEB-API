@@ -20,8 +20,7 @@ namespace api_producto.Controllers
             return negocio.Listar();
         }
 
-        // GET: api/Producto/5
-
+        // GET: api/Producto/
         //Buscar producto
         public Articulo Get(int id)
         {
@@ -29,10 +28,23 @@ namespace api_producto.Controllers
             return negocio.BuscarArticuloPorId(id);
         }
 
+
         // POST: api/Producto
+        //Alta Producto
         public void Post([FromBody] ArticuloDto articulo)
         {
             ImagenNegocio imagenNegocio = new ImagenNegocio();
+            ArticuloNegocio articuloNegocio = new ArticuloNegocio();
+
+            Articulo nuevo = new Articulo
+            {
+                CodigoArticulo = articulo.CodigoArticulo,
+                NombreArticulo = articulo.NombreArticulo,
+                DescripcionArticulo = articulo.DescripcionArticulo,
+                PrecioArticulo = articulo.PrecioArticulo,
+                Marca = new Marca { IdMarca = articulo.IdMarca },
+                Categoria = new Categoria { IdCategoria = articulo.IdCategoria }
+            };
 
             // ejemplo para validar el funcionamiento
             // Agregar imágenes a un Producto.
