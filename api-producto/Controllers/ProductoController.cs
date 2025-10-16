@@ -13,6 +13,7 @@ namespace api_producto.Controllers
     public class ProductoController : ApiController
     {
         // GET: api/Producto
+        //Listar Producto
         public IEnumerable<Articulo> Get()
         {
             ArticuloNegocio negocio = new ArticuloNegocio();
@@ -20,9 +21,12 @@ namespace api_producto.Controllers
         }
 
         // GET: api/Producto/5
-        public string Get(int id)
+
+        //Buscar producto
+        public Articulo Get(int id)
         {
-            return "value";
+            ArticuloNegocio negocio = new ArticuloNegocio();
+            return negocio.BuscarArticuloPorId(id);
         }
 
         // POST: api/Producto
