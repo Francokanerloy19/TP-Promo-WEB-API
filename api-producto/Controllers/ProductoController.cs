@@ -48,22 +48,20 @@ namespace api_producto.Controllers
 
             // ejemplo para validar el funcionamiento
             // Agregar imágenes a un Producto.
-            int idArticulo = 3; // solo para prueba
-
+            int idArticulo = articuloNegocio.Alta(nuevo);
            
-            // Creamos una lista vacía de ejempolo
-            List<string> urls = new List<string>();
-
             
-            foreach (var imagen in articulo.Imagenes)
+
+            if (articulo.Imagenes != null && articulo.Imagenes.Count > 0)
             {
-                urls.Add(imagen.ImagenUrl);
-            }
+                List<string> urls = new List<string>();
+                foreach (var imagen in articulo.Imagenes)
+                {
+                    urls.Add(imagen.ImagenUrl);
+                }
 
-            // Llamamos al método
-            
-            // Recuperamos el Id del articulo agregado
-            imagenNegocio.agregarImagen(idArticulo, urls);
+                imagenNegocio.agregarImagen(idArticulo, urls);
+            }
         }
 
         // PUT: api/Articulo/id

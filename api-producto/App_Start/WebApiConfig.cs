@@ -19,6 +19,8 @@ namespace api_producto
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Formatters.Remove(config.Fromatters.XmlFormatter);
         }
     }
 }

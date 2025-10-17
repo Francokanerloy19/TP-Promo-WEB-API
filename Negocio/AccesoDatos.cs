@@ -22,7 +22,7 @@ namespace Negocio
         public AccesoDatos()
         {
             conexion = new SqlConnection("server=.\\SQLEXPRESS01; database=PROMOS_DB; integrated security=true");
-            //conexion = new SqlConnection("server=.\\SQLEXPRESS; database=PROMOS_DB; integrated security=true");
+            conexion = new SqlConnection("server=.\\SQLEXPRESS; database=PROMOS_DB; integrated security=true");
             comando = new SqlCommand();
         }
         public void setearConsulta(string consulta)
@@ -44,7 +44,8 @@ namespace Negocio
                 throw ex;
             }
         }
-        public object ejecutarScalar()
+
+        public object ejecutarEscalar()
         {
             comando.Connection = conexion;
             try

@@ -106,6 +106,36 @@ namespace Negocio
             return articulo;
         }
 
+      
+        public int Alta(Articulo art)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta(@"INSERT INTO ARTICULOS (Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio) OUTPUT INSERTED.Id VALUES (@Codigo, @Nombre, @Descripcion, @IdMarca, @IdCategoria, @Precio)");
+       
+                datos.setearParametros("@Codigo", art.CodigoArticulo);
+                datos.setearParametros("@Nombre", art.NombreArticulo);
+                datos.setearParametros("@Descripcion", art.DescripcionArticulo);
+                datos.setearParametros("@Marca", art.Marca.IdMarca);
+                datos.setearParametros("@Categoria", art.Categoria.IdCategoria);
+                datos.setearParametros("@Precio", art.PrecioArticulo);
+
+                //Llama al metodo ejecutarEscalar que devuelve un solo dato obteniendo el id generado
+                int idGenerado = (int)datos.ejecutarEscalar();
+
+                return idGenerado;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+        
         public void modificar(Articulo art)
         {
             AccesoDatos datos = new AccesoDatos();
